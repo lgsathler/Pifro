@@ -1,79 +1,412 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+           "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html>
-<head>
-  <meta charset='utf-8'>
+<meta name="GENERATOR" content="TtHgold 4.00">
+ <style type="text/css"> div.p { margin-top: 7pt;}</style>
+ <style type="text/css"><!--
+ td div.comp { margin-top: -0.6ex; margin-bottom: -1ex;}
+ td div.comb { margin-top: -0.6ex; margin-bottom: -.6ex;}
+ td div.hrcomp { line-height: 0.9; margin-top: -0.8ex; margin-bottom: -1ex;}
+ td div.norm {line-height:normal;}
+ span.roman {font-family: serif; font-style: normal; font-weight: normal;} 
+ span.overacc2 {position: relative;  left: .8em; top: -1.2ex;}
+ span.overacc1 {position: relative;  left: .6em; top: -1.2ex;} --></style>
 
-  <title>lgsathler/Pifro @ GitHub</title>
+  														 
+<title>Wiki PIFRO</title>
 
-  <style type="text/css">
-    body {
-      margin-top: 1.0em;
-      background-color: #ffffff;
-      font-family: Helvetica, Arial, FreeSans, san-serif;
-      color: #000000;
-    }
-    #container {
-      margin: 0 auto;
-      width: 700px;
-    }
-    h1 { font-size: 3.8em; color: #000000; margin-bottom: 3px; }
-    h1 .small { font-size: 0.4em; }
-    h1 a { text-decoration: none }
-    h2 { font-size: 1.5em; color: #000000; }
-    h3 { text-align: center; color: #000000; }
-    a { color: #000000; }
-    .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
-    .download { float: right; }
-    pre { background: #000; color: #fff; padding: 15px;}
-    hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
-    .footer { text-align:center; padding-top:30px; font-style: italic; }
-  </style>
-</head>
+<div class="p"><!----></div>
 
-<body>
-  <a href="http://github.com/lgsathler/Pifro"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+<div class="p"><!----></div>
 
-  <div id="container">
+<div class="p"><!----></div>
 
-    <div class="download">
-      <a href="http://github.com/lgsathler/Pifro/zipball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
-      <a href="http://github.com/lgsathler/Pifro/tarball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></a>
-    </div>
+<div class="p"><!----></div>
 
-    <h1><a href="http://github.com/lgsathler/Pifro">Pifro</a>
-      <span class="small">by <a href="http://github.com/lgsathler">lgsathler</a></span></h1>
+<div class="p"><!----></div>
 
-    <div class="description">
-      Tipicamente, existe um grande número de enlaces de fibra ótica já posicionadas no subsolo. Entretanto, elas só podem ser utilizadas quando os dispositivos óticos apropriados são instalados em suas extremidades. Os dispositivos óticos que operam nessas redes custam atualmente centenas de milhões de dólares.
+<div class="p"><!----></div>
 
-O projeto consiste em implementar as principais heurísticas propostas na literatura sobre o problema de instalação de fibras óticas em redes WDM e propor novas estratégias de solução. A resolução do problema envolve minimizar o custo dos aparelhos óticos necessários para funcionamento da rede. Uma heurística baseada em algoritmos genéticos é proposta para resolver o problema. 
-    </div>
+<div class="p"><!----></div>
 
-    <h2>Authors</h2>
-<p>Luiz Gustavo S. Dias (lgsathler@gmail.com)<br/><br/>      </p>
-<h2>Contact</h2>
-<p> (lgsathler@gmail.com)<br/>      </p>
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+
+<h1> Sumário </h1>
+<ul>
+<li> <a href="#introducao">Introdução</a> </li>
+<li> <a href="#heuristicas">Heurísticas para PIFRO</a> </li>
+<ul>
+	<li><a href="#heuristicas_pifro">Heurísticas de Antonakopoulos e Zhang</a> </li>
+		<ul>
+			<li><a href="#heuristica_greedy">Heurística Greedy</a> </li>
+			<li><a href="#heuristica_psc">Heurística PSC</a> </li>
+		</ul>
+</ul>
+<li> <a href="#genetico">Biased Random-Key Genetic Algorithm</a> </li>
+<ul>
+	<li><a href="#brkga_pifro">BRKGA-PIFRO</a> </li>
+</ul>
+<li> <a href="#instancias">Instâncias</a> </li>
+<ul>
+	<li><a href="#sndlib">SNDlib</a> </li>
+	<li><a href="#netlib">NETlib</a> </li>
+</ul>
+</ul>
+
+<div class="p"><!----></div>
+<a name="introducao">
+ <h1>1 Introdução</h1>
+</a>
+<div class="p"><!----></div>
+Os problemas de otimização são abundantes na indústria de telecomunicações e surgem tanto no projeto quanto na operação de sistemas de telecomunicação. Grande parte destes problemas pertence a classe dos problemas NP-Difíceis. Atualmente, não existem na literatura estratégias de desenvolvimento de algoritmos polinomiais que resolvam problemas nesta classe. Diante deste fato, as técnicas mais comumente empregadas para resolver problemas NP-Difíceis são algoritmos heurísticos e algoritmos exatos com complexidade de tempo exponencial. Os algoritmos heurísticos fornecem uma possível solução para o problema em tempo polinomial, mas não garantem que a solução devolvida seja ótima. Entretanto, através de experimentos computacionais pode-se demonstrar para determinados problemas que as soluções devolvidas são de boa qualidade. Os algoritmos exatos garantem que a solução devolvida seja ótima. Entretanto, o tempo necessário para que o algoritmo encerre sua execução pode inviabilizar sua aplicação.
+
+<div class="p"><!----></div>
+Em redes de fibras óticas, a informação é transmitida na forma de um sinal luminoso. Cada enlace pode conter várias fibras óticas operando em taxas de 
+transmissão da ordem de terabits por segundo. A tecnologia WDM (do inglês Wavelength Division Multiplexing) 
+possibilita um maior aproveitamento da grande faixa de banda disponível nos enlaces de fibra ótica, pois permite que o sinal luminoso seja particionado 
+em diversos canais de transmissão, cada um multiplexado em um comprimento de onda diferente.
+
+<div class="p"><!----></div>
+As conexões entre estações terminais são estabelecidas na forma de caminhos óticos. Caminhos óticos são canais de comunicação onde o sinal ótico não sofre conversão para o domínio eletrônico nas estações intermediárias entre o transmissor e o receptor. Isto permite que a rede opere a altas taxas de transmissão. Um caminho ótico é definido em função de sua rota e do comprimento de onda no qual é multiplexado. Ele deve ser multiplexado com o mesmo comprimento de onda em todos os enlaces em sua rota, a não ser que as estações intermediárias sejam equipadas com conversores óticos de comprimentos de onda. Múltiplos caminhos óticos podem utilizar o mesmo comprimento de onda, contanto que não compartilhem um enlace da rede.
+
+<div class="p"><!----></div>
+Um conjunto de caminhos óticos define uma topologia virtual sobre a topologia física da rede. O tráfego de dados é realizado sobre a topologia virtual, independentemente de como as fibras óticas estão distribuídas fisicamente. O projeto de topologias virtuais consiste em determinar o conjunto de caminhos óticos que devem ser estabelecidos para criar uma topologia virtual que seja ideal para transmitir um determinado tráfego de dados de acordo com uma métrica de desempenho.
+
+<div class="p"><!----></div>
+Uma vez que a topologia virtual é definida, uma rota e um comprimento de onda devem ser atribuídos a cada caminho ótico. Dados a topologia física de uma rede WDM e um conjunto de demandas de caminhos óticos (topologia virtual), os problemas de roteamento e atribuição de comprimentos de onda -
+RWA consistem em definir uma rota e atribuir um comprimento de onda para cada caminho ótico, de modo que 
+caminhos óticos cujas rotas compartilhem algum enlace da rede usem comprimentos de onda diferentes.
+
+<div class="p"><!----></div>
+Os dispositivos óticos que operam nessas redes custam atualmente milhões de dólares. Tipicamente, existe um grande número de enlaces de fibra ótica já posicionadas no subsolo. Entretanto, elas só podem ser utilizadas quando os dispositivos óticos apropriados são instalados em suas extremidades. Seja N = (X,A) um grafo direcionado representando uma rede ótica, onde X é o conjunto de nós e A é o conjunto de arcos (fibras óticas). Denota-se por T = t1, t2, ... , tl o conjunto de demandas de caminhos óticos, cada uma delas definida por um par de vértices em X.
+
+<div class="p"><!----></div>
+O Problema de Instalação de Fibras em Redes óticas (PIFRO) consiste em definir uma rota p<sub>i</sub> e 
+um comprimento de onda w<sub>i</sub> para cada caminho ótico t<sub>i</sub> em T , de forma que dois caminhos óticos que compartilhem algum enlace da rede tenham 
+comprimentos de onda diferentes. O objetivo do problema é minimizar o custo total dos dispositivos óticos necessários para a operação da rede. 
+
+<div class="p"><!----></div>
+ A Figura <a href="#pifroin">1</a>  mostra um grafo que representa a rede ótica. Os nós estão numerados de 1 a 8. Na figura
+estão definidos quatro caminhos óticos (1 para 2, 2 para 4, 5 para 1 e 6 para 5) e seus respectivos comprimentos de onda. Repare que caminhos óticos que compartilham um enlace tem comprimentos de onda diferentes (linhas contínuas e tracejadas).
+    
+<div class="p"><!----></div>
+ <center>        <img src="img/pifro.png" width="452" height="359" />
+  <a name="pifroin">       
+<center>Figura 1: Visão de uma rede ótica. Os círculos representam as estações terminais. Os quadrados representam os chaveadores óticos (ROADM's). As 
+linhas direcionadas representam os caminhos óticos. Caminhos óticos que compartilham um enlace tem comprimentos de onda diferentes (linhas contínuas e 
+tracejadas)</center>
+</a>
+    </center>
+<div class="p"><!----></div>
+Neste projeto leva-se em consideração apenas o custo do ROADM (do inglês Reconfigurable
+Optical Add/Drop Multiplexer). O aparelho permite que o sinal ótico atravesse um nó da rede, de um enlace para qualquer outro, sem necessidade de 
+conversão para o domínio elétrico. O chaveamento ótico diminui a necessidade de conversores ótico-elétrico e elétrico-ótico, reduzindo o atraso de 
+propagação do sinal. Um ROADM com k portas deve ser instalado em cada nó da rede e pode ser conectado em até k fibras óticas. O custo do ROADM
+é linearmente proporcional ao número de portas que ele tem.
+
+<div class="p"><!----></div>
+A função de custo de cada um dos enlaces da rede é dada por:
+<a name="custo1">
+</a>
+<br clear="all" /><table border="0" width="100%"><tr><td>
+<table align="center" cellspacing="0"  cellpadding="2"><tr><td nowrap="nowrap" align="center">
+F<sub>WDM</sub>(&#969;) = c<sub>1</sub> &#183;</td><td align="left" class="cl">&#x23A1;<br />&#x23A2;
+ </td><td nowrap="nowrap" align="center">
+&#969;
+<div class="hrcomp"><hr noshade="noshade" size="1"/></div>&#956;<br /></td><td align="left" class="cl">&#x23A4;<br />&#x23A5;
+</td><td nowrap="nowrap" align="center">
+</td></tr></table>
+</td><td width="1%">(1)</td></tr></table>
 
 
-    <h2>Download</h2>
-    <p>
-      You can download this project in either
-      <a href="http://github.com/lgsathler/Pifro/zipball/master">zip</a> or
-      <a href="http://github.com/lgsathler/Pifro/tarball/master">tar</a> formats.
-    </p>
-    <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
-      by running:
-      <pre>$ git clone git://github.com/lgsathler/Pifro</pre>
-    </p>
+c<sub>1</sub> representa o custo do ROADM, &#969; representa a quantidade de demandas que utilizam o enlace e &#956; a quantidade de canais suportados em um único enlace de fibra ótica. 
 
-    <div class="footer">
-      get the source code on GitHub : <a href="http://github.com/lgsathler/Pifro">lgsathler/Pifro</a>
-    </div>
+<div class="p"><!----></div>
+A figura <a href="#pcusto0">2</a> mostra um gráfico com o comportamento da função de custo F<sub>WDM</sub> de acordo com a variação do número de demandas
+que utilizam o enlace da rede. Trata-se de uma função degrau.
+ 
+<div class="p"><!----></div>
+<a name="tth_fIg2">
+</a>         <center>        <img src="img/fcusto0.png" width="278" height="234" />
+        <a name="pcusto0">        
+<center>Figura 2: O gráfico mostra o comportamento da função de custo F<sub>WDM</sub>. No eixo y tem-se o o custo em cada enlace e no eixo x número de demandas
+que utilizam o enlace.</center>
+</a>
+    </center>
+<div class="p"><!----></div>
+Como já mencionado anteriormente, algoritmos exatos para este problema são inviáveis. Faz-se necessário a utilização
+de algoritmos aproximados.
 
-  </div>
 
-  
-</body>
+<div class="p"><!----></div>
+<a name="heuristicas">
+ <h1>2 Heurísticas para PIFRO</h1>
+</a>
+<div class="p"><!----></div>
+O Problema de Instalação de Fibras em Redes óticas (PIFRO) consiste em definir uma rota p<sub>i</sub> e um comprimento de onda w<sub>i</sub> para cada caminho ótico t<sub>i</sub> em T (conjunto de demandas) , de forma que dois caminhos óticos que compartilhem algum enlace da rede tenham 
+comprimentos de onda diferentes. O objetivo do problema é minimizar o custo total dos dispositivos óticos necessários para a operação da rede.
+
+<div class="p"><!----></div>
+A primeira heurística chamada de <tt>Greedy</tt> usa uma estratégia gulosa. A segunda
+heurística chamada de <tt>PSC</tt> propõe uma modificação na função de custo a ser minimizada.
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc1">
+<a name="heuristicas_pifro">
+2.1</a>&nbsp;&nbsp;Heurísticas de Antonakopoulos e Zhang (2007)</h2>
+</a>
+
+<div class="p"><!----></div>
+Antonakopoulos e Zhang (2007) propuseram duas heurísticas para PIFRO. O trabalho foca apenas na etapa de roteamento dos caminhos óticos.
+A primeira heurística chamada de <tt>Greedy</tt> traz uma estratégia gulosa. A segunda heurística chamada de <tt>PSC</tt> propõe uma modificação na função 
+de custo para tentar melhorar a qualidade das soluções. Ambas utilizam como estratégia de solução o conceito de custo marginal. Estas heurísticas e a 
+estratégia de solução são apresentadas a seguir.
+
+<div class="p"><!----></div>
+Se o tráfego em um enlace da rede aumenta de w para w+&#948;, onde w representa o número de comprimentos de onda que passam no enlace, o custo marginal no enlace aumenta de:
+
+<div class="p"><!----></div>
+
+<br clear="all" /><table border="0" width="100%"><tr><td>
+<table align="center" cellspacing="0"  cellpadding="2"><tr><td nowrap="nowrap" align="center">
+F<sub>WDM</sub>(&#969;+&#948;) &#8722; F<sub>WDM</sub>(&#969;)</td></tr></table>
+</td><td width="1%">(1)</td></tr></table>
+
+
+
+<div class="p"><!----></div>
+Em outras palavras, o custo marginal representa em quanto a função F<sub>WDM</sub>  irá crescer caso passe uma quantidade &#948; a mais de tráfego em determinado enlace.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc1.1">
+		 
+<a name="heuristica_greedy">
+2.1.1</a>&nbsp;&nbsp;Heurística Greedy</h3>
+</a>
+
+<div class="p"><!----></div>
+A heurística <tt>Greedy</tt> traz uma estratégia gulosa. O algoritmo começa definindo uma permutação das demandas e com uma rede 
+vazia, ou seja, nenhuma fibra foi usada e nenhum equipamento instalado. A cada iteração do algoritmo uma demanda é escolhida e sua rota é calculada. A 
+rota escolhida é aquela que implica no menor acréscimo na função de custo dos aparelhos (ROADM's instalados na rede). Durante a etapa de escolha das 
+rotas utiliza-se a equação  como função a ser minimizada.
+
+<div class="p"><!----></div>
+Inicialmente cada uma das demandas é analisada uma única vez. Entretanto pode ocorrer de após uma demanda ser roteada, outras rotas melhores apareçam.
+Dessa forma o algoritmo efetua várias iterações sobre o conjunto de demandas, tentando encontrar uma rota de menor custo
+que a anterior. O algoritmo termina quando não é possível melhorar a solução.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc1.2">
+		 
+<a name="heuristica_psc">
+2.1.2</a>&nbsp;&nbsp;Heurística PSC</h3>
+</a>
+
+<div class="p"><!----></div>
+A heurística <tt>PSC</tt> propõe uma modificação na função de custo para tentar melhorar a qualidade
+das soluções. Ela também utiliza uma abordagem iterativa, ou seja, o algoritmo percorre o conjunto de demandas várias vezes tentando determinar uma rota de menor custo que a anterior. A função de custo utilizada pela heurística <tt>PSC</tt> é discutida a seguir.
+
+<div class="p"><!----></div>
+Originalmente a função de custo  em cada enlace é linear , com saltos períodicos de tamanhos iguais (função degrau).
+Uma função de pseudo-custo dos aparelhos foi modelada por Antonakopoulos and L. Zhang da Bell Labs Research. O algoritmo faz várias iterações sobre o conjunto de demandas, tentando rotea-las novamente de forma a reduzir a função custo. Sobretudo, a nova função encoraja a rotear novamente aquelas demandas que utilizam enlaces pouco ocupados. 
+
+<div class="p"><!----></div>
+Se &#956; representa a capacidade de um enlace, p representa o passo atual do 
+algoritmo, P é um parâmetro e <img src="img/f4.png" width="172" height="27" style="position:relative; left:0px;
+  top:5px;"/>
+
+<div class="p"><!----></div>
+<a name="pseudocusto">
+</a>
+<br clear="all" /><table border="0" width="100%"><tr><td>
+<table align="center" cellspacing="0"  cellpadding="2"><tr><td nowrap="nowrap" align="center">
+F&#8242;<sub>WDM</sub>(&#969;) = c<sub>1</sub> </td><td align="left" class="cl">&#x23A1;<br />&#x23A3;
+ </td><td nowrap="nowrap" align="center">
+p
+<div class="hrcomp"><hr noshade="noshade" size="1"/></div>P<br /></td><td nowrap="nowrap" align="center">
+&#183;</td><td align="left" class="cl">&#x23A1;<br />&#x23A2;
+ </td><td nowrap="nowrap" align="center">
+&#969;
+<div class="hrcomp"><hr noshade="noshade" size="1"/></div>&#956;<br /></td><td align="left" class="cl">&#x23A4;<br />&#x23A5;
+</td><td nowrap="nowrap" align="center">
++ </td><td nowrap="nowrap" align="center">
+P&#8722;p
+<div class="hrcomp"><hr noshade="noshade" size="1"/></div>P<br /></td><td nowrap="nowrap" align="center">
+&#183;f</td><td align="left" class="cl">&#x239B;<br />&#x239D;
+</td><td nowrap="nowrap" align="center">
+&#969;
+<div class="hrcomp"><hr noshade="noshade" size="1"/></div>&#956;<br /></td><td align="left" class="cl">&#x239E;<br />&#x23A0;
+</td><td align="left" class="cl">&#x23A4;<br />&#x23A6;
+</td><td nowrap="nowrap" align="center">
+</td></tr></table>
+</td><td width="1%">(2)</td></tr></table>
+
+
+
+<div class="p"><!----></div>
+Os algoritmos de determinação de menor caminho utilizam F&#8242;<sub>WDM</sub> se p &lt; P e F<sub>WDM</sub> caso contrário. Um valor
+típico de P é 5.
+
+<div class="p"><!----></div>
+Os primeiros dois termos de F&#8242;<sub>WDM</sub> são a combinação linear de <img src="img/f5.png" width="44" height="48" style="position:relative; left:0px;
+  top:15px;"/>  da 
+função original de custo e <img src="img/f6.png" width="48" height="46" style="position:relative; left:0px;
+  top:20px;"/>. No passo inicial p=0, o pseudo-custo é <br> <br> definido como f(). Mas gradualmente converge para F<sub>WDM</sub> à medida que p cresce. A convergência é lenta para dar oportunidade ao algoritmo de se adaptar para solução de custos reais. A escolha de f(x) é que funções muito côncavas como esta
+encorajam a rotear novamente aquelas demandas que utilizam enlaces pouco ocupados.
+
+<div class="p"><!----></div>
+A figura <a href="#fcusto">3</a> mostra o comportamento da função . Repare que a função de custo tradicional  é uma função escada.
+A função de pseudo-custo converge lentamente para o custo real.
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg1">
+</a> <center><img src="img/fcusto.png" width="323" height="231"/>
+<a name="fcusto">
+<center>Figura 3: Função de pseudo-custo F&#8242;<sub>WDM</sub></center>
+</a>
+</center>
+<div class="p"><!----></div>
+<a name="genetico">
+ <h1><a name="tth_chAp3"></a>3 Biased Random-Key Genetic Algorithm</h1>
+</a>
+<div class="p"><!----></div>
+A motivação para se aplicar esta metaheurística para PIFRO é sua aplicação bem sucedida para vários outros problemas 
+de otimização em redes de computadores Gonçalves e Resende (2009); Buriol et al. (2005, 2007); Resende (2004); Reis
+et al. (2011); Noronha et al. (2010a).
+
+
+<div class="p"><!----></div>
+No algoritmo genético baseado em chaves aleatórias, um indivíduo é representado por uma vetor contendo os valores reais gerados aleatoriamente entre [0,1]. Após geração do indivíduo, este é ordenado, 
+associa-se os índices do vetor de  chaves a uma sequência. <br />
+
+<div class="p"><!----></div>
+A população é representada por um conjunto de vetores de chaves aleatórias. A população inicial é formada por indivíduos gerados aleatoriamente.
+Cada um desses indivíduos é ordenado segundo os valores das chaves aleatórias. Calcula-se a aptidão dos indivíduos. Aqueles indivíduos com menor custo
+fazem parte da elite da população, são considerados os melhores indivíduos. <br />
+
+<div class="p"><!----></div>
+O procedimento de reprodução é feito da seguinte forma. É selecionado um indivíduo da elite e outro pertencente ao restante da população.
+O novo indivíduo gerado herdará parte das chaves do indivíduo elite e parte das chaves do outro. Isso depende da probabilidade de "cross-over"
+escolhida. Uma probabilidade de "cross-over" mais alta geralmente indica que o novo indivíduo terá mais características do pai elite. <br />
+
+<div class="p"><!----></div>
+Uma iteração do algoritmo é chamada de geração. Os melhores indivíduos (elite) são copiados para nova geração.Os piores indivíduos da geração anterior 
+são removidos e novos indivíduos são gerados aleatoriamente. Isso permite variabilidade da solução e evita uma convergência muito rápida do algoritmo.
+O restante da população é gerado através do cruzamento de indivíduos da elite com o restante da população da geração anterior. O melhor indivíduo
+é guardado. O algoritmo termina quando o critério de aceitação for atingido.  <br />
+
+<div class="p"><!----></div>
+Alguns parâmetros devem ser ajustados como o tamanho da população, a quantidade de indivíduos que são considerados elite, a quantidade de indivíduos 
+que são considerados "ruins" e a probabilidade de "cross-over". <br />
+
+<div class="p"><!----></div>
+A figura <a href="#brkga">4</a> ilustra o funcionamento de BRKGA. A população é dividida em 3 classes.
+A classe A representa os melhores indivíduos. A classe B representa os indivíduos originados do cruzamento de indivíduos das classes A e B da
+geração anterior. A classe C representa os indivíduos que sofrem mutação. A importância dos indivíduos da classe C, é que apesar de não serem
+boas soluções, mantêm a variabilidade genética da população, evitando um elitismo na população e consequentemente ótimos locais.
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg1">
+</a> <center><img src="img/g5687.png" width="301" height="296" />
+<a name="brkga">
+<center>Figura 4: A população é dividida em 3 classes. Indivíduos da classe A são considerados os melhores indivíduos. Indivíuos classe B são
+gerados a partir do cruzamento de indivíduos de classes A e B da geração anterior. Indivíduos da classe C são os indivíduos que sofrem
+mutação, ou seja, a cada geração são gerados aleatoriamente.</center>
+</a>
+</center>
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc1">
+	 
+<a name="brkga_pifro">
+3.1</a>&nbsp;&nbsp;BRKGA-PIFRO</h2>
+</a>
+
+<div class="p"><!----></div>
+Um indivíduo é representado por um vetor contendo os valores reais gerados aleatoriamente entre [0,1].
+Após geração do indivíduo, este é ordenado, associa-se os índices do vetor de  chaves a uma sequência.
+No problema de PIFRO, a sequência representa a ordem em que as demandas devem ser roteadas. <br />
+
+<div class="p"><!----></div>
+No problema de PIFRO, a aptidão do indivíduo é dada pelo custo da instalação dos ROADM's, de forma que toda a sequência de demandas seja roteada. Aqueles indivíduos com menor custo
+são considerados os melhores indivíduos. Para cálculo do custo utiliza-se a heurística <tt>PSC</tt>.  <br />
+
+<div class="p"><!----></div>
+Foram utilizadas duas abordagens de BRKGA-PIFRO. Na primeira delas leva-se em consideração apenas as chaves no processo de ordenação da sequência de
+demandas. Na segunda abordagem, além de utilizar as chaves, utiliza-se o caminho mínimo (número de saltos) no processo de ordenação da sequência de 
+demandas. A idéia é que é mais fácil ordenar primeiro aquelas demandas cujos caminhos mínimos são maiores e depois ordenar as demandas cujos caminhos
+mínimos são menores. Nesse caso, as chaves servem basicamente para desempatar entre aquelas demandas de mesma distância.
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg2">
+</a> <center><img src="img/g4745.png" width="551" height="311"/>
+
+<center>Figura 5: A figura mostra a associação entre os índices do vetor de chaves (representado pelo cromossomo) e a sequência de demandas.
+Repare que após a ordenação a sequência de demandas é alterada. Leva-se em consideração a distância de cada uma das requisições. Nesse
+caso as chaves servem apenas para desempatar demandas com distâncias iguais.</center>
+<a name="brkga-pifro">
+</a>
+</center>
+
+<div class="p"><!----></div>
+<a name="instancias">
+ <h1>4 Instâncias</h1>
+</a>
+<div class="p"><!----></div>
+<a name="sndlib">
+ <h1>4.1 SNDlib</h1>
+</a>
+
+<div class="p"><!----></div>
+SNDlib (Survivable Network Design Library) é uma biblioteca de instâncias de testes para problemas de otimização em redes,
+disponível em Zuse-Institute (2009).
+
+<div class="p"><!----></div>
+Do conjunto de instâncias da SNDlib utilizados no projeto, algumas foram obtidas
+através de parcerias entre instituições de ensino, fabricantes de equipamentos e operadoras de rede:
+DFN-BWIN, DFN-GWIN, PDH e POLSKA. As instâncias citadas a seguir são referências em grandes projetos
+pesquisas na Europa tendo como participantes grandes operadoras de telecomunicação e fabricantes de
+equipamentos Orlowski et al. (2007): ABILENE, GEANT e NOBEL-US. O grupo final de instâncias foi utilizado por outros autores
+em problemas de otimização e disponibilizado para a biblioteca SNDlib. Algumas destas
+instâncias foram alteradas através de, por exemplo, aumento do número de links, para
+torná-las mais desafiadoras: ATLANTA, DI-YUAN e NEWYORK.
+
+<div class="p"><!----></div>
+<a name="netlib">
+ <h1>4.2 NETlib</h1>
+</a>
+
+<div class="p"><!----></div>
+Coleção de instâncias mais realistas utilizadas para o problema RWA. As topologias e as matrizes de tráfego
+são baseadas em padrões e dimensões de redes de telecomunicações reais. As instâncias estão disponíveis
+para download em T. F. Noronha, M. G. C. Resende e C. C. Ribeiro, "Instances for the routing and wavelength assignment problem",
+www.ic.uff.br/celso/grupo/rwa.html
+
+<div class="p"><!----></div>
+Todas as topologias das redes são conectadas e cada enlace corresponde a um par bidirecional de fibras. As matrizes de tráfego
+são assimétricas, ou seja, pode ter uma requisição de tráfego de i para j, mas não de j para i.
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+
+<br /><br /><hr /><small>File translated from
+T<sub><font size="-1">E</font></sub>X
+by <a href="http://hutchinson.belmont.ma.us/tth/">
+T<sub><font size="-1">T</font></sub>Hgold</a>,
+version 4.00.<br />On 23 Aug 2011, 15:23.</small>
 </html>
